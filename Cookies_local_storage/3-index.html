@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Cookies</title>
+    <style>
+        #submitForm {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input {
+            padding: 5px;
+        }
+
+        button {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loginForm">
+        <h2>Login to the website</h2>
+        <form id="submitForm">
+            <input type="text" id="name" placeholder="Firstname">
+            <input type="email" id="email" placeholder="Email">
+            <button type="submit">Log me in</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("submitForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            document.cookie = `firstname=${document.getElementById("name").value}`;
+            document.cookie = `email=${document.getElementById("email").value}`;
+            showWelcomeMessageOrForm();
+        });
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        function showForm() {
+            document.getElementById("loginForm").style.display = "block";
+            const greeting = document.getElementById("welcome");
+            if (greeting) greeting.remove();
+        }
+
+        function hideForm() {
+            document.getElementById("loginForm").style.display = "none";
+        }
+
+        function deleteCookiesAndShowForm() {
+            document.cookie = "firstname=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            document.cookie = "email=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+            showForm();
+        }
+
+        function showWelcomeMessageOrForm() {
+            const firstname = getCookie("firstname");
+            if (!firstname) {
+                showForm();
+            } else {
+                hideForm();
+                const h1 = document.createElement("h1");
+                h1.id = "welcome";
+                h1.innerHTML = `Welcome ${firstname}<a href="#" id="logout">(logout)</a>`;
+                document.body.appendChild(h1);
+                document.getElementById("logout").addEventListener("click", function () {
+                    deleteCookiesAndShowForm();
+                });
+            }
+        }
+
+        showWelcomeMessageOrForm();
+    </script>
+</body>
+
+</html>

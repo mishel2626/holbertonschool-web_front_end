@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head><style>
+        #submitForm {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        input {
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        </style>
+        </head>
+
+<body>
+    <h4>Login to the website</h4>
+    <form id="submitForm">
+        <div>
+            <input type="text" id="name" value="" placeholder="Firstname">
+        </div>
+        <div>
+            <input type="email" id="email" value="" placeholder="email">
+        </div>
+        <button type="submit" id="login">Log me in</button>
+    </form>
+    <h4>Cokies</h4>
+    <button id="showCookies">Show the cookies</button>
+    <script>
+        document.getElementById("submitForm").addEventListener("submit", setCookies);
+
+        function setCookies(event) {
+            event.preventDefault();
+            const firstname = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const date = new Date();
+            date.setDate(date.getDate() + 10);
+            const expire = date.toUTCString();
+
+            document.cookie = `firstname=${firstname}; email=${email}; expires= ${expire}; }`;
+        }
+
+        document.getElementById("showCookies").addEventListener("click", showCookies)
+
+        function showCookies() {
+            let before = document.createElement("p");
+            before.innerHTML = "Cookie: " + document.cookie;
+            document.body.appendChild(before);
+        }
+    </script>
+</body>
+
+</html>
